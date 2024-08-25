@@ -7,6 +7,7 @@ import os
 import csv
 import logging
 
+VERSION = '0.0.1'
 logging.basicConfig(level=logging.INFO)
 
 
@@ -20,7 +21,11 @@ def init_args() -> argparse.Namespace:
     """
     parser = argparse.ArgumentParser(
         prog='csvc',
-        description="CSV Convertor: convert CSV file's encoding",
+        description=f'''
+        CSV Convertor: convert CSV file's encoding
+        作者：WangShihan\n
+        版本：{VERSION}
+        ''',
         epilog='wangshihan'
     )
     parser.add_argument('--f', required=True, type=str,help="当处理单文件时为csv文件，当批处理时为目录。")
