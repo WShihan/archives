@@ -1,3 +1,5 @@
+ascii/
+
 */build/*
 *.spec
 # self define
@@ -23,11 +25,13 @@ gitee
 *.pub
 # C extensions
 *.so
+test/
 /*.rdb
 
 # Distribution / packaging
 .Python
 build/
+dist/
 develop-eggs/
 downloads/
 eggs/
