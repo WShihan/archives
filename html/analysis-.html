@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+  <meta charset="utf-8">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.108/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesium.com/downloads/cesiumjs/releases/1.108/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+</head>
+<body>
+  <div id="cesiumContainer" ></div>
+  <script type="module">
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4NzlmYzRjOC01MzM0LTQ1NzgtYjVkOC02MGRhZDcwNThkYTUiLCJpZCI6MTAxMTQwLCJpYXQiOjE2Njc0MzY1OTB9.t05RcqkVpxmAxMfgIiLXVP5lXNzWamaaiZjltZHTJAU';
+    const viewer = new Cesium.Viewer('cesiumContainer', {
+      terrain: Cesium.Terrain.fromWorldTerrain(),
+    //   关闭一些控件
+      timeline: false, 
+      infoBox: false,
+      homeButton: false,
+      animation: false,
+    });    
+    window.viewer = viewer
+    // 定位到目标点
+    viewer.camera.flyTo({
+      destination: Cesium.Cartesian3.fromDegrees(120.23037,30.23265, 40000),
+      orientation: {
+        heading: Cesium.Math.toRadians(0.0),
+        pitch: Cesium.Math.toRadians(-90.0),
+      }
+    });
+    let scene = viewer.scene;
+    const downHandler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+    downHandler.setInputAction(function (evt) {
+      // const carte3 = scene.pickPosition(evt.position);
+      // var carto = scene.globe.ellipsoid.cartesianToCartographic(carte3);
+      // var lon = Cesium.Math.toDegrees(carto.longitude);
+      // var lat = Cesium.Math.toDegrees(carto.latitude);
+      // console.log(lon, lat)
+      // within([lon, lat])
+      const pickedObj = viewer.scene.pick(evt.position);
+      pickedObj.color = Cesium.Color.LIME;
+
+    }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
+
+    // 加载3dtile
+    try {
+        const tileset = await Cesium.Cesium3DTileset.fromUrl(
+            "http://127.0.0.1:5000/static/3dtile/hangzhou_building_3dtile/tileset.json"
+        );
+        viewer.scene.primitives.add(tileset);
+    } catch (error) {
+        console.error(`Error creating tileset: ${error}`);
+    }
+
+    // 判断当前坐标点内是否包含于矢量面内
+    function within(coordinates){
+      axios.post('http://127.0.0.1:5000/api/gis/within',{
+              point: coordinates,
+              table: "hangzhou_building",
+              outformat: 'geojson'
+          }
+      ).then(res =>{
+        if(res.data.status){
+          let data = res.data.data
+          console.log(data)
+          if(data){
+            let coords = new Array(data.feature.coordinates).flat(Infinity)
+            let height = data.height
+            console.log(coords)
+            let positions = Cesium.Cartesian3.fromDegreesArray(coords)
+            console.log(positions)
+            viewer.entities.removeById('highlight')
+            viewer.entities.add({
+              id: 'highlight',
+              polygon:{
+                hierarchy: positions,
+                material: new Cesium.ColorMaterialProperty(Cesium.Color.fromCssColorString('rgba(241, 150, 12, 1)')),
+                height:0,
+                extrudedHeight: height
+              }
+            })
+          }
+
+        }
+      })
+    }
+    // within([120.235778, 30.211456])
+
+  </script>
+ </div>
+</body>
+</html>

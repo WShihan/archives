@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>WMS渲染范围限制</title>
+    <script src="https://cdn.jsdelivr.net/npm/openlayers@4.6.5/dist/ol.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/openlayers@4.6.5/dist/ol.min.css" />
+  </head>
+  <body>
+    <div id="map" style="width: 100%; height: 95vh"></div>
+    <script type="text/javascript">
+      const WenShan =
+        'Polygon ((105.76155441316930705 23.40188271436465328, 106.11836494513329399 23.69560071315682137, 105.13531552033450112 24.18809091250172472, 104.37072152326875596 24.91005768021382138, 103.46049057438098373 24.38057883023481054, 103.36582655569662847 23.9686991772715281, 103.73720078284286217 23.70893591225287267, 104.41441260881535413 23.6088887397100855, 104.24693011422003508 23.44197376527568721, 104.27605750458442913 23.26815825973160301, 104.63286803654843027 22.85276136228360144, 104.82947792150821442 22.90643288216496387, 104.90957824501033713 23.10081384236289281, 105.17900660588112771 23.36177951926244845, 105.43387127156967153 23.46869437790135038, 105.52125344266292473 23.39519969142985545, 105.76155441316930705 23.40188271436465328))';
+      const geoserverLayer = new ol.layer.Tile({
+        source: new ol.source.TileWMS({
+          url: 'https://wsh233.cn/geoserver/yunnan/wms',
+          params: {
+            layers: 'yunnan:yunnanLakes',
+            tiled: true,
+          },
+        }),
+      });
+      //   var cqlFilter = 'BBOX(geom, 97, 21, 100, 23)';
+      var cqlFilter = 'INTERSECTS(geom, ' + WenShan + ')';
+      geoserverLayer.getSource().updateParams({ CQL_FILTER: cqlFilter });
+      const baseMap = new ol.layer.Tile({
+        name: 'street',
+        zIndex: 0,
+        source: new ol.source.XYZ({
+          url: 'https://webrd02.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
+        }),
+      });
+
+      //实例化Map对象加载地图
+      var map = new ol.Map({
+        target: 'map',
+        controls: ol.control.defaults({
+          attributionOptions: {
+            collapsible: true,
+          },
+        }),
+        layers: [baseMap, geoserverLayer],
+        view: new ol.View({
+          center: ol.proj.fromLonLat([101, 25]),
+          zoom: 4,
+          maxZoom: 15,
+          minZoom: 3,
+        }),
+      });
+    </script>
+  </body>
+</html>

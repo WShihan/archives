@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+    <head>
+        <meta charset="utf-8">
+        <title>控高分析</title>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <link rel="shortcut icon" href="https://www.xiemolin233.cn/static/Favicon.ico" type="image/x-icon">
+        <script src="https://cesium.com/downloads/cesiumjs/releases/1.108/Build/Cesium/Cesium.js"></script>
+        <link href="https://cesium.com/downloads/cesiumjs/releases/1.108/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.js"></script>
+        <style>
+            .opt {
+                position: fixed;
+                left: 5vw;
+                top: 5vh;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                width: 20vw;
+                padding: 1vw;
+                border-radius: 1vw;
+                background-color: rgba(33, 112, 216, 0.883);
+                z-index: 999;
+            }
+            .opt label {
+                width: 30px;
+                font-size: 10px;
+            }
+            .opt input {
+                flex: 1;
+                cursor: pointer;
+            }
+            #cesiumContainer {
+                width: 98vw;
+                height: 95vh;
+                margin: 0 auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="opt">
+            <label for="height">高度:</label>
+            <input id="height" type="range" min="0" max="400" step="1" value="0"/>
+        </div>
+        <div id="cesiumContainer"></div>
+
+        <script type="module" defer>
+            Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4NzlmYzRjOC01MzM0LTQ1NzgtYjVkOC02MGRhZDcwNThkYTUiLCJpZCI6MTAxMTQwLCJpYXQiOjE2Njc0MzY1OTB9.t05RcqkVpxmAxMfgIiLXVP5lXNzWamaaiZjltZHTJAU';
+            const viewer = new Cesium.Viewer('cesiumContainer', {
+                terrain: Cesium.Terrain.fromWorldTerrain(),
+                // 关闭一些控件
+                timeline: false,
+                infoBox: false,
+                homeButton: false,
+                animation: false,
+                
+            });
+            viewer._cesiumWidget._creditContainer.style.display = "none";
+            window.viewer = viewer
+
+
+            // 定位到目标点
+            viewer.camera.flyTo({
+                destination: Cesium.Cartesian3.fromDegrees(120.23037, 30.23265, 10000),
+                orientation: {
+                    heading: Cesium.Math.toRadians(0.0),
+                    pitch: Cesium.Math.toRadians(-90.0)
+                }
+            });
+            let state = {
+                baseHeight: 0,
+                height: 0,
+                upColor: 'rgb(255, 0, 0)'
+            }
+            let scene = viewer.scene;
+            // 加载3dtile
+            try {
+                const tileset = await Cesium.Cesium3DTileset.fromUrl("/static/3dtiles/hangzhou_building/tileset.json");
+                viewer.scene.primitives.add(tileset);
+            } catch (error) {
+                console.error(`Error creating tileset: ${error}`);
+            }
+            let _positions = [
+                    {
+                        "x": -2776781.498989422,
+                        "y": 4764201.054135617,
+                        "z": 3194357.9375043423
+                    },
+                    {
+                        "x": -2775943.5172839253,
+                        "y": 4766139.445465028,
+                        "z": 3192219.9336442514
+                    },
+                    {
+                        "x": -2778497.635757584,
+                        "y": 4765515.403850098,
+                        "z": 3190931.2291095685
+                    },
+                    {
+                        "x": -2779778.5066977087,
+                        "y": 4763406.873310145,
+                        "z": 3192950.6476656436
+                    }, {
+                        "x": -2779783.077455766,
+                        "y": 4763437.097952252,
+                        "z": 3192966.0810909737
+                    }
+                ]
+                let upPrimitive,
+                    downPrimitive,
+                    panelEntity;
+
+                function drawDownEntity() {
+                    panelEntity = viewer.entities.add({
+                        polygon: {
+                            hierarchy: new Cesium.CallbackProperty(() => {
+                                return new Cesium.PolygonHierarchy(cartesian3ToCartographic());
+                            }),
+                            material: new Cesium.ColorMaterialProperty(Cesium.Color.fromCssColorString('#65DD2A')),
+                            perPositionHeight: false,
+                            outline: true,
+                            classificationType: Cesium.ClassificationType.CESIUM_3D_TILE,
+                            outlineColor: Cesium.Color.WHITE.withAlpha(1)
+                        }
+                    });
+                }
+                function drawFloatingEntity() {
+                    panelEntity = viewer.entities.add({
+                        polygon: {
+                            hierarchy: new Cesium.CallbackProperty(() => {
+                                return new Cesium.PolygonHierarchy(cartesian3ToCartographic());
+                            }),
+                            material: new Cesium.ColorMaterialProperty(Cesium.Color.WHITE.withAlpha(0.3)),
+                            perPositionHeight: true,
+                            outline: true,
+                            outlineColor: Cesium.Color.WHITE.withAlpha(1)
+                        }
+                    });
+                }
+                function drawUpPrimitive() {
+                    if (_positions.length<= 2) 
+                    return;
+                
+                let upGeometry = new Cesium.GeometryInstance({
+                    geometry: new Cesium.PolygonGeometry(
+                        {polygonHierarchy: new Cesium.PolygonHierarchy(_positions), height: 0, extrudedHeight: 500}
+                    ), attributes: {
+                        color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.fromCssColorString(state.upColor).withAlpha(1))
+                    }
+                });
+
+                upPrimitive = viewer.scene.primitives.add(new Cesium.ClassificationPrimitive({geometryInstances: upGeometry, releaseGeometryInstances: false, classificationType: Cesium.ClassificationType.CESIUM_3D_TILE}));
+
+                
+            }
+            function cartesian3ToCartographic() {
+                let cartos = _positions.map((cart3) => {
+                        let carto = Cesium.Cartographic.fromCartesian(cart3);
+                        carto.height = state.height;
+                        return carto;
+                    }) 
+
+                        return cartos.map((item) => {
+                            return Cesium.Cartesian3.fromDegrees(Cesium.Math.toDegrees(item.longitude), Cesium.Math.toDegrees(item.latitude), item.height);
+                        });
+                    
+
+
+                }
+
+                function changeUpHeight(height) {
+                    if (! upPrimitive) 
+                        return;
+                    
+
+
+                    let cartographic = Cesium.Cartographic.fromCartesian(upPrimitive._primitive._boundingSpheres[0].center); // 弧度
+                    let surface = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, state.baseHeight);
+                    let offset = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, state.baseHeight + height);
+                    let trans = Cesium.Cartesian3.subtract(offset, surface, new Cesium.Cartesian3());
+                    upPrimitive._primitive.modelMatrix = Cesium.Matrix4.fromTranslation(trans);
+                }
+
+                $("#height").on('input', function (e) {
+                    const val = e.delegateTarget.value
+                    state.height = Number(val)
+                    changeUpHeight(state.height)
+                    console.log('height-change', val)
+                });
+                drawUpPrimitive()
+                drawDownEntity()
+                drawFloatingEntity()
+        </script>
+    </body>
+</html></div></body></html>

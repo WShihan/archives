@@ -1,0 +1,61 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>我的足迹</title>
+    <script src="https://cdn.jsdelivr.net/npm/openlayers@4.6.5/dist/ol.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/openlayers@4.6.5/dist/ol.min.css">
+</head>
+<body>
+    <div id="map" style="width:100%;height:95vh;"></div>
+    <script type="text/javascript">
+
+        //实例化Map对象加载地图
+        var map = new ol.Map({
+            target: 'map',
+            controls: ol.control.defaults({
+                /** @type {olx.control.AttributionOptions} */
+                attributionOptions: ({
+                    collapsible: true
+                })
+            }),
+            layers: [
+                new ol.layer.Tile({
+                    name: 'street',
+                    zIndex: 0,
+                    source: new ol.source.XYZ({
+                    url: "https://webrd02.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}",
+                    }),
+                })
+            ],
+            view: new ol.View({
+                center: ol.proj.fromLonLat([100, 33]),
+                zoom: 3,
+                maxZoom: 15,
+                minZoom: 3
+            })
+        });
+        $.get('/static/footpoint.geojson', (data)=>{
+            map.addLayer(
+                new ol.layer.Vector({
+                    source: new ol.source.Vector({
+                        features: new ol.format.GeoJSON().readFeatures(JSON.parse(data)),
+                    }),
+                    style: new ol.style.Style({
+                        image: new ol.style.Icon({
+                            src: '/static/footpoint.png',
+                            scale: 0.1
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: 'red',
+                            width:10,
+                        })
+                    })
+                })
+            )
+        })
+    </script>
+
+</body>
+</html>

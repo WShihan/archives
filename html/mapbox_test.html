@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OpenLayers with Mapbox</title>
+    <script src="https://cdn.jsdelivr.net/npm/openlayers@4.6.5/dist/ol.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/openlayers@4.6.5/dist/ol.min.css" />
+    <style>
+      * {
+        padding: 0px;
+        margin: 0px;
+      }
+      #map {
+        width: 100vw;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <script>
+      var map = new ol.Map({
+        target: 'map',
+        layers: [
+          new ol.layer.Tile({
+            wrapX: true,
+            source: new ol.source.XYZ({
+              url: 'https://api.mapbox.com/styles/v1/shihanwanggg/clx3c8nlv01mk01qx2u7t4rpj/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2hpaGFud2FuZ2dnIiwiYSI6ImNrcHMxcXFnMjA5cjkybm82dG53bHk0c2MifQ.R_lMc6UUIfHIUOv6pE6xVQ',
+            }),
+          }),
+        ],
+        view: new ol.View({
+          center: ol.proj.fromLonLat([120, 31]),
+          zoom: 6,
+        }),
+      });
+    </script>
+  </body>
+</html>
