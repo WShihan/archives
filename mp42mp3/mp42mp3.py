@@ -20,7 +20,15 @@ VERSION = '0.0.1'
 script_dir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(script_dir)
 
-def extractor(video_path, start: int =0, end: int = 0):
+
+def extractor(video_path, start: int = 0, end: int = 0):
+    """提取音频
+    Args:
+        video_path (str): mp4 文件路径
+        start (int, optional): 开头跳过秒数. Defaults to 0.
+        end (int, optional): 结尾跳过秒数. Defaults to 0.
+    """
+
     try:
         logging.info("{0:-^100}".format(f'开始提取：{video_path}'))
         file_name = os.path.splitext(os.path.basename(video_path))[0]
@@ -29,7 +37,7 @@ def extractor(video_path, start: int =0, end: int = 0):
 
         # 设置要提取的音频的起始和结束时间（单位为秒）
         # 跳过前 10 秒
-        start_time = start  
+        start_time = start
         # 跳过最后 5 秒
         end_time = video.duration - end
 
@@ -50,9 +58,13 @@ def main():
                     作者：WangShihan\n
                     版本：{VERSION}
                 '''
-    parser.add_argument('-v', required=True, type=str, help='单个mp4文件路径或多个mp4文件所在路径')
+    parser.add_argument(
+        '-v', required=True, type=str, help='单个mp4文件路径或多个mp4文件所在路径'
+    )
     parser.add_argument('-s', type=int, default=0, help='跳过前多少秒（单位为秒）')
-    parser.add_argument('-e', type=int, default=0, help='距离结尾多少秒结束（单位为秒）')
+    parser.add_argument(
+        '-e', type=int, default=0, help='距离结尾多少秒结束（单位为秒）'
+    )
     args = parser.parse_args()
 
     file_path = os.path.abspath(args.v)
@@ -60,7 +72,7 @@ def main():
     end = args.e
 
     if os.path.exists(file_path) is False:
-        raise ValueError('无法获取vidycsv文件，请检查路径！')
+        raise ValueError('无法获取mp4文件，请检查路径！')
 
     if os.path.isdir(file_path):
         logging.info('{:-^100}'.format('指定目录，开始查找mp4文件'))
@@ -74,7 +86,7 @@ def main():
             print(f)
 
         for i in range(0, len(videos), 10):
-            videos_sub = videos[i:i+10]
+            videos_sub = videos[i : i + 10]
             with ThreadPoolExecutor(max_workers=10) as executor:
                 tasks = [executor.submit(extractor, j, start, end) for j in videos_sub]
                 as_completed(tasks)
@@ -83,6 +95,6 @@ def main():
 
     logging.info(f'耗时：{time.time() - start_time}秒')
 
+
 if __name__ == '__main__':
     main()
-

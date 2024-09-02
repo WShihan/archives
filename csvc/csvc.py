@@ -26,11 +26,20 @@ def init_args() -> argparse.Namespace:
         作者：WangShihan\n
         版本：{VERSION}
         ''',
-        epilog='wangshihan'
+        epilog='wangshihan',
     )
-    parser.add_argument('--f', required=True, type=str,help="当处理单文件时为csv文件，当批处理时为目录。")
-    parser.add_argument('--d', required=False, type=str, default='utf-8', help='解码格式，默认为utf-8。')
-    parser.add_argument('--e', required=False, type=str, default='gbk', help='编码格式，默认为gbk。')
+    parser.add_argument(
+        '-f',
+        required=True,
+        type=str,
+        help="当处理单文件时为csv文件，当批处理时为目录。",
+    )
+    parser.add_argument(
+        '-d', required=False, type=str, default='utf-8', help='解码格式，默认为utf-8。'
+    )
+    parser.add_argument(
+        '-e', required=False, type=str, default='gbk', help='编码格式，默认为gbk。'
+    )
 
     args = parser.parse_args()
     logging.info('检验参数及配置')
@@ -43,6 +52,7 @@ def tip(msg, sign='-'):
     fmt = '{0:%s^100}' % sign
     return fmt.format(msg)
 
+
 def covertor(file: str, decoding: str, encoding: str):
     """转换编码格式
     Args:
@@ -52,7 +62,10 @@ def covertor(file: str, decoding: str, encoding: str):
     """
     faileds = []
     reader = csv.DictReader(open(file, 'r', encoding=decoding))
-    writer = csv.DictWriter(open(file.split('.')[0] + f'_{encoding}.csv', 'w', encoding=encoding), fieldnames=reader.fieldnames)
+    writer = csv.DictWriter(
+        open(file.split('.')[0] + f'_{encoding}.csv', 'w', encoding=encoding),
+        fieldnames=reader.fieldnames,
+    )
     writer.writeheader()
     for row in reader:
         try:
