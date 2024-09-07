@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkmy_app_vue"]=self["webpackChunkmy_app_vue"]||[]).push([[391],{8542:function(e,c,n){n.r(c),n.d(c,{default:function(){return i}});var r=n(3396);const t={class:"mylog-article"};function a(e,c,n,a,u,s){const o=(0,r.up)("router-view");return(0,r.wg)(),(0,r.iD)("div",t,[(0,r.Wm)(o)])}var u={name:"mylog-article"},s=n(89);const o=(0,s.Z)(u,[["render",a],["__scopeId","data-v-15c22cee"]]);var i=o}}]);
+//# sourceMappingURL=391.a59d4e1c.js.map

@@ -1,0 +1,51 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0vw;
+  min-height: 90vh;
+  font-size: 14px;
+  padding-bottom: 10%; }
+  .content img {
+    display: block;
+    width: 100%;
+    margin: 0px auto;
+    border-radius: 1%; }
+    .content p {
+      width: 100%;
+      overflow: hidden; }
+
+.about {
+  margin: 0px auto; }
+
+  @media (min-width: 1000px) {
+    h1 {
+      font-size: 16px;   }
+      h2 {
+        font-size: 16px;   }
+        h3 {
+          font-size: 15px;   }
+          h4, h5, h6 {
+            font-size: 14px;   }
+            .content {
+              width: 100%;
+              color: #000;
+              font-size: 14px;   }
+}
+
+@media (min-width: 0px) and (max-width: 1000px) {
+  h1, h2, h3 {
+    font-size: 46.2px;   }
+    h4, h5, h6 {
+      font-size: 45px;   }
+      .codehilite {
+        width: 100%;
+        overflow: scroll;   }
+        .content {
+          width: 90%;
+          margin: 0px auto;
+          color: #000;
+          font-size: 45px;
+          font-weight: 300;   }
+}

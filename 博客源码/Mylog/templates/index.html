@@ -1,0 +1,11 @@
+{% extends 'template.html' %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    {{ content | md2html | safe }}
+</div>
+
+{% endblock content %}

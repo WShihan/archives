@@ -1,0 +1,45 @@
+{% extends 'template.html' %}
+{% from 'macro.html' import license  %}
+{% from 'macro.html' import upper %}
+
+
+{% block content %}
+{% if subs %}
+<div class="subs">
+  {% for k, v in subs.items() %}
+    <a href="/moment/{{k}}">{{k}}年</a>
+  {% endfor %}
+</div>
+{% endif %}
+<div class="covers">
+    {% for one in ones %}
+    <div class="cover">
+        <div class="lazy-img-wrapper">
+            <a target="_blank" href="{{one.url}}"><img class="lazy-img"  data-src="{{one.url}}" alt=""></a>
+        </div>
+        <div class="info">
+          <div class="item saying">
+            <span class="content-text">{{one.saying}}</span>
+          </div>
+          <div class="item now">
+            <div class="day">
+              <span>{{ one.time.day}}</span>
+            </div>
+            <div class="date">
+              <span class="content-text">{{ one.time|year_month_filter }} </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+</div>
+<div class="btn tip" style="width:100%;display: flex;justify-content: space-around;padding: 1vw;">
+  {% if pre %}
+    <a href="/moment/{{pre}}">{{pre}}年</a>
+  {% endif %}
+  {% if next %}
+    <a href="/moment/{{next}}">{{next}}年</a>
+  {% endif %}
+</div>
+{{ upper() }}
+{% endblock %}

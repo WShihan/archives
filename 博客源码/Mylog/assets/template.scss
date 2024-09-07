@@ -1,0 +1,247 @@
+@import './define.scss';
+* {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, 'BBAlpha Sans', 'S60 Sans', Arial,
+    'Hiragino Sans GB', 'Microsoft YaHei', 'WenQuanYi Micro Hei', sans-serif;
+}
+
+a,
+.link {
+  color: getVar(--base-color);
+  text-decoration: none;
+  &:hover,
+  &:active {
+    text-decoration: underline;
+  }
+}
+
+.icon {
+  display: inline-block;
+  &:hover {
+    font-weight: bolder;
+    transform: scale(1.2);
+  }
+}
+
+blockquote {
+  padding: 10px;
+  border-radius: 5px;
+}
+section {
+  width: 100%;
+}
+.tip {
+  font-size: getVar(--font-size-tip);
+  border: none;
+}
+
+input,
+textarea {
+  color: getVar(--font-color);
+  padding: 0.3em;
+  border: 1px solid gray;
+  border-radius: 0.3em;
+  background-color: getVar(--input-bg-color);
+}
+#theme-switch svg:last-child {
+  display: none;
+}
+.darkmode #theme-switch svg:first-child {
+  display: none;
+}
+.darkmode #theme-switch svg:last-child {
+  display: block;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin: 0 auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  width: getVar(--base-width);
+  color: getVar(--font-color);
+
+  .content-wrapper {
+    flex: 1;
+    padding-top: getVar(--container-padding-vertical);
+    padding-bottom: getVar(--container-padding-vertical);
+    padding-left: getVar(--container-padding-horizontal);
+    padding-right: getVar(--container-padding-horizontal);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .content {
+      flex: 1;
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      line-height: 1.7em;
+    }
+  }
+  .body-inner {
+    min-height: getVar(--container-height-min);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: inherit;
+    margin: getVar(--container-margin);
+    background-color: inherit;
+    color: inherit;
+    background-color: getVar(--main-bg-color);
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: getVar(--base-color);
+}
+.upper {
+  $--icon-size: 2.5em;
+  position: fixed;
+  bottom: 2em;
+  right: 2em;
+  width: $--icon-size;
+  height: $--icon-size;
+  opacity: 0;
+  border-radius: 0.2em;
+  transition: opacity 0.5s ease-in-out;
+  cursor: pointer;
+  background-color: getVar(--base-color);
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: inherit;
+    height: inherit;
+    color: #fff;
+    text-decoration: none;
+    &:active,
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: getVar(--footer-padding-size) 0px;
+  margin-top: 2em;
+  border-top: 1px solid getVar(--border-color);
+  gap: 2em;
+  .footer-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    span {
+      font-size: getVar(--footer-font-size);
+      color: rgb(123, 119, 119);
+    }
+    a {
+      @include center();
+    }
+    svg {
+      width: getVar(--footer-icon-size);
+      height: getVar(--footer-icon-size);
+      border-radius: 3px;
+      fill: getVar(--base-color);
+    }
+  }
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  text-align: left;
+  font-size: getVar(--nav-font-size);
+  color: gray;
+  border-bottom: 1px solid getVar(--border-color);
+  margin: 0px;
+  padding: 0.5em 0px;
+  .nav-inner {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .icon {
+    margin-left: 3px;
+    svg {
+      width: getVar(--nav-icon-size);
+      height: getVar(--nav-icon-size);
+    }
+  }
+}
+.icon {
+  cursor: pointer;
+  &:hover,
+  :active {
+    transform: scale(1.2);
+    font-weight: bolder;
+  }
+}
+
+.lazy-img-wrapper {
+  display: block;
+  min-height: 100px;
+  background-image: url(/static/loading.gif);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 2em;
+  img {
+    opacity: 0;
+    display: block;
+    width: 100%;
+    margin: 0px auto;
+    border-radius: 0.1em;
+    transition: opacity 1s ease-in-out;
+  }
+}
+.subs {
+  display: flex;
+  justify-content: space-between;
+  flex-flow: wrap;
+  align-items: center;
+  width: 100%;
+  margin: 1em auto;
+  font-size: getVar(--font-size);
+  line-height: 2em;
+  color: inherit;
+  gap: 10px;
+}
+
+h1 {
+  font-size: getVar(--font-size);
+}
+h2 {
+  font-size: getVar(--font-size);
+}
+h3 {
+  font-size: getVar(--font-size);
+}
+h4,
+h5,
+h6 {
+  font-size: getVar(--font-size);
+}
+
+// 背景格子
+body {
+  font-size: getVar(--font-size);
+  background-color: getVar(--main-bg-color);
+  background-image: getVar(--base-main-bg-img);
+  background-size: 20px 20px; /* 控制每个小格子的大小 */
+  -ms-overflow-style: none; /* 适用于 Internet Explorer 和 Edge */
+  scrollbar-width: none; /* 适用于 Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

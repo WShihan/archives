@@ -1,0 +1,27 @@
+{% extends 'template.html' %} 
+{% block header %} 
+{{ moment.include_moment() }} 
+{{moment.lang('zh-CN')}} 
+{% endblock header %} 
+{% block content %}
+<div class="outer" style="flex: 1;">
+  <p>
+    <a href="https://github.com/WShihan/all-about-gis">github</a>｜<a href="/all-about-gis/feed.xml">RSS</a>
+  </p>
+  <div class="blogs">
+    {% for blog in publications %}
+    <div class="post">
+      <div class="date">
+        <span >{{ moment(blog.time).fromNow() }} &nbsp;</span>
+      </div>
+        <div class="title">
+        <a href="/{{ '/' |concate('all-about-gis', blog.id) }}">
+          <span> All about GIS · {{ blog.id }}</span>
+        </a>
+        </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock content %}

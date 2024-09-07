@@ -1,0 +1,28 @@
+@import './define.scss';
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0vw;
+  padding-bottom: 2em;
+  img {
+    display: block;
+    width: 100%;
+    margin: 0px auto;
+    border-radius: 1%;
+  }
+  p {
+    width: 100%;
+    overflow: hidden;
+  }
+}
+.about {
+  margin: 0px auto;
+}
+.checklist {
+  list-style: none;
+}
+.content {
+  flex-direction: column;
+}

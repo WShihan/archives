@@ -1,0 +1,60 @@
+{% extends 'template.html' %}
+{% block header %}
+<style>
+    form {
+        width: 90%;
+        margin: 1em auto;
+    }
+    .form-items {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+    }
+
+    .form-items .item {
+        flex: 1;
+        display: flex;
+        gap: 1em;
+        width: 100%;
+    }
+
+    input, textarea {
+        flex: 1;
+    }
+    button {
+        margin: 20px;
+        padding: 0.2em;
+    }
+</style>
+{% endblock header %}
+
+{% block content %}
+<div class="about content">
+    <form action="/mylog/whisper/create/bot" method="post">
+        <div class="form-items">
+            <div class="item">
+                <label for="用户">用户</label>
+                <input type="text" name="user" id="user">
+            </div>
+            <div class="item">
+                <label for="password">口令</label>
+                <input type="password" name="password" id="password">
+            </div>            <div class="item">
+                <label for="password">日期</label>
+                <input type="date" name="time" id="time">
+            </div>
+            <div class="item">
+                <label for="content"></label>
+                <textarea name="content" id="content" cols="30" rows="10"></textarea>
+            </div>
+            <input class="csrf" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
+            <button>提交</button>
+        </div>
+
+    </form>
+
+</div>
+
+
+{% endblock content %}

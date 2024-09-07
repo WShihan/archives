@@ -1,0 +1,33 @@
+.whisper {
+  width: 100%; }
+  .whisper .whisper-item {
+    display: flex;
+    gap: 5px;
+    width: 100%;
+    min-height: 6em;
+    border: none; }
+    .whisper .whisper-item .whisper-item-body {
+      flex: 9;
+      padding: 1em 0px; }
+      .whisper .whisper-item .whisper-item-body .body-text {
+        height: 100%;
+        padding: 0.5em;
+        font-size: var(--font-size);
+        line-height: 2em;
+        border-radius: 3px;
+        background: var(--whisper-block-color); }
+        .whisper .whisper-item .whisper-item-body .body-text img {
+          display: block;
+          width: 100%;
+          margin: 0.5em auto;
+          border-radius: 0.5em; }
+    .whisper .whisper-item .whisper-item-timeline {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      color: var(--font-color);
+      font-size: var(--timeline-font-size);
+      border: none;
+      border-left: 1px solid var(--border-color); }

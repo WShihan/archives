@@ -1,0 +1,38 @@
+.outer {
+  flex: 1; }
+
+  .search {
+    margin: 2em auto; }
+    .search .search-input {
+      display: flex;
+      gap: 10px; }
+      .search .search-input input {
+        flex: 1;
+        border: 1px solid #aca9a9; }
+    .search button {
+      cursor: pointer; }
+
+.blogs {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  line-height: 1.5em;
+  gap: 1.5em;
+  height: 100%;
+  margin: 1.5em auto; }
+  .blogs a {
+    color: inherit; }
+    .blogs .post {
+      display: flex; }
+      .blogs .post .date {
+        font-size: var(--font-size);
+        color: gray; }
+        .blogs .post .title {
+          flex: 1;
+          display: flex;
+          font-size: var(--font-size); }
+          .blogs .post .title .title {
+            flex: 9; }
+            .blogs .post .title .title:hover {
+              color: var(--base-color); }

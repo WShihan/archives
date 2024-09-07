@@ -1,0 +1,45 @@
+@function getVar($name) {
+  @return var(#{$name});
+}
+
+@mixin center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// 媒体查询
+@mixin media($device) {
+  @if $device == 'phone' {
+    @media (min-width: 0px) and (max-width: 768px) {
+      @content;
+    }
+  } @else if $device == 'tablet' {
+    @media (min-width: 768px) and (max-width: 1024px) {
+      @content;
+    }
+  } @else if $device == 'desktop' {
+    @media (min-width: 1024px) {
+      @content;
+    }
+  }
+}
+// -----------------滚动条样式----------------
+@mixin scroll-style {
+  $--bar-size: 0.3em;
+  /* 设置滚动条的样式 */
+  &::-webkit-scrollbar {
+    width: $--bar-size;
+    height: 0px;
+  }
+  /* 滚动槽 */
+  &::-webkit-scrollbar-track {
+    border-radius: $--bar-size * 0.5;
+    background: rgb(9, 35, 92);
+  }
+  /* 滚动条滑块 */
+  &::-webkit-scrollbar-thumb {
+    border-radius: $--bar-size * 0.5;
+    background: rgb(21, 126, 201);
+  }
+}

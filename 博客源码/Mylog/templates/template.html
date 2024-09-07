@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<!-- 
+         ——
+  🫵  👉 |🤡| 
+         ——
+-->
+<html lang="zh-CN" style="scrollbar-width: none">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <link rel=“canonical” href=“https://example.com/sample-page/” />
+    <meta property="og:title" content="{{title}}" />
+    {% if desc %}
+    <meta name="description" content="{{desc}}" />
+    <meta property="og:description" content="{{desc}}" />
+    {% else %}
+    <meta name="description" content="王世涵的博客，记录网联网记忆的地方。" />
+    {% endif %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/normalize-8.0.1.css')}}" />
+    <link rel="icon" href="{{ url_for('static', filename='Favicon.ico') }}" type="image/x-icon" />
+    <style class="inner-css-templates">
+      {{ 'template.css' | inner_css | safe }}
+    </style>
+    <style class="inner-css-variable">
+      {{ 'variable.css' | inner_css | safe }}
+    </style>
+    {% if styles %} {% for f in styles %}
+    <style class="inner-css-{{ f }}">
+      {{ f | inner_css | safe }}
+    </style>
+    {% endfor %} {% endif %}
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    {{ moment.include_moment() }} {{ moment.lang('zh-CN')}} {% block header %} {% endblock header %}
+    <title>{{ title }}</title>
+  </head>
+  <body >
+    <!-- 切换显示模式 -->
+    <script>
+      const modeCookieKey = 'view-mode';
+      const NORMALMODE = 'normalmode';
+      const DARKMODE = 'darkmode';
+
+      function setCookie(name, value) {
+        var currentDate = new Date();
+        var expiresDate = new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000); // 7天后的日期
+        var expiresGMT = expiresDate.toGMTString();
+        document.cookie = `${name}=${value}; expires=-1;path=/`;
+        document.cookie = `${name}=${value}; expires=${expiresGMT};path=/;`;
+      }
+
+      function getCookie(name) {
+        let mode = NORMALMODE;
+        document.cookie.split(';').forEach(item => {
+          if (item.split('=')[0].trim() == name) {
+            mode = item.split('=')[1].trim();
+          }
+        });
+        return mode;
+      }
+
+      function switchMode(mode) {
+        if (mode == NORMALMODE) {
+          document.body.classList.add(NORMALMODE);
+          document.body.classList.remove(DARKMODE);
+        } else {
+          document.body.classList.add(DARKMODE);
+          document.body.classList.remove(NORMALMODE);
+        }
+      }
+      // 设置默认显示模式
+      switchMode(getCookie(modeCookieKey))
+
+      document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('theme-switch').addEventListener('click', function (evt) {
+          let mode = getCookie(modeCookieKey);
+          mode = mode == NORMALMODE ? DARKMODE : NORMALMODE;
+          switchMode(mode);
+          setCookie('view-mode', mode);
+          console.log(mode);
+        });
+      });
+    </script>
+    <div class="container">
+      <div class="body-inner">
+        <div class="content-wrapper">
+          <div class="nav">
+            <div class="nav-inner">
+              {% if not nav %}
+              <span>首页</span>
+              {% elif nav is iterable %}
+              <span>
+                <a class="link" href="/">首页</a>
+                /
+              </span>
+              {% for route in nav %}
+              <span>
+                {% if route.link %}
+                <a class="link" href="{{ route.link }}">{{ route.label }}</a>
+                / {% else %} {{ route.label }} {% endif %}
+              </span>
+              {% endfor %} {% else %}
+              <span>
+                <a class="link" href="/">首页</a>
+              </span>
+              <span> / {{nav.label}}</span>
+              {% endif %}
+            </div>
+            <div id="theme-switch" class="icon" title="切换显示模式" data-mode="normal">
+              <svg
+                t="1715888294320"
+                class="icon"
+                viewBox="0 0 1024 1024"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                p-id="4284"
+                width="15px"
+                height="15px"
+              >
+                <path
+                  d="M515.711998 0a424.959734 424.959734 0 0 0-171.903893 341.311787C343.808105 576.959639 536.319985 767.99952 773.567837 767.99952a430.079731 430.079731 0 0 0 218.367863-59.071963A515.967678 515.967678 0 0 1 515.775998 1023.99936C230.848176 1023.99936 0.00032 794.751503 0.00032 511.99968s230.911856-511.99968 515.711678-511.99968z m202.239873 123.327923a12.799992 12.799992 0 0 1 9.727994 9.727994l3.135998 13.951991a110.719931 110.719931 0 0 0 85.759947 84.287947l14.527991 3.007999a12.799992 12.799992 0 0 1 0 25.087984l-14.591991 3.007998a110.719931 110.719931 0 0 0-85.695947 84.287947l-3.135998 14.015992a12.799992 12.799992 0 0 1-24.959984 0l-3.199998-14.015992A110.719931 110.719931 0 0 0 613.951936 262.399836l-14.591991-3.007998a12.799992 12.799992 0 0 1 0-25.087984l14.591991-3.007999a110.719931 110.719931 0 0 0 85.695947-84.287947l3.135998-13.951991a12.799992 12.799992 0 0 1 15.29599-9.727994z m247.999845 160.831899a3.839998 3.839998 0 0 1 2.879998 2.879999l1.472 6.527996c3.199998 14.207991 14.335991 25.151984 28.543982 28.159982l6.911995 1.343999a3.839998 3.839998 0 0 1 0 7.551995l-6.911995 1.407999a36.927977 36.927977 0 0 0-28.543982 28.159983l-1.472 6.463996a3.839998 3.839998 0 0 1-7.487995 0l-1.471999-6.527996a36.927977 36.927977 0 0 0-28.543982-28.095983l-6.911996-1.407999a3.839998 3.839998 0 0 1 0-7.551995l6.911996-1.407999a36.927977 36.927977 0 0 0 28.543982-28.095982l1.471999-6.527996a3.839998 3.839998 0 0 1 4.607997-2.879999zM882.559768 84.159947a3.839998 3.839998 0 0 1 2.943999 2.879999l1.407999 6.527996c3.199998 14.207991 14.399991 25.151984 28.607982 28.159982l6.847996 1.343999a3.839998 3.839998 0 0 1 0 7.551995l-6.847996 1.407999a36.927977 36.927977 0 0 0-28.607982 28.159983l-1.407999 6.463996a3.839998 3.839998 0 0 1-7.487996 0l-1.471999-6.527996a36.927977 36.927977 0 0 0-28.607982-28.095983l-6.847996-1.407999a3.839998 3.839998 0 0 1 0-7.551995l6.847996-1.407999a36.927977 36.927977 0 0 0 28.607982-28.095982l1.471999-6.527996a3.839998 3.839998 0 0 1 4.543997-2.879999z"
+                  fill="#00a9fa"
+                  p-id="4285"
+                ></path>
+              </svg>
+              <svg
+                t="1715890734011"
+                class="icon"
+                viewBox="0 0 1024 1024"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                p-id="13814"
+                width="15px"
+                height="15px"
+              >
+                <path
+                  d="M480 160V64h64v96h-64z m180.288 31.168l48-83.136 55.424 32-48 83.136-55.424-32zM512 736a224 224 0 1 0 0-448 224 224 0 0 0 0 448z m0 64a288 288 0 1 0 0-576 288 288 0 0 0 0 576z m352-320h96v64h-96v-64z m19.968-219.712l-83.136 48 32 55.424 83.136-48-32-55.424zM260.288 140.032l48 83.136 55.424-32-48-83.136-55.424 32z m-69.12 223.68l-83.136-48 32-55.424 83.136 48-32 55.424zM480 864v96h64v-96h-64zM160 480H64v64h96v-64z m-51.968 228.288l83.136-48 32 55.424-83.136 48-32-55.424z m200.256 92.544l-48 83.168 55.424 32 48-83.168-55.424-32z m400 115.168l-48-83.168 55.424-32 48 83.168-55.424 32z m92.544-200.288l83.136 48 32-55.424-83.136-48-32 55.424z"
+                  p-id="13815"
+                  fill="#00a9fa"
+                ></path>
+              </svg>
+            </div>
+          </div>
+          {% block content %} {% endblock content %}
+          <a id="bottom" href="#bottom"></a>
+          <div class="footer .hidden-xs">
+            <div class="footer-item" title="邮件联系">
+              <a
+                class="btn-icon icon"
+                href="mailto:3443327820@qq.com"
+                title="Email"
+                target="_blank"
+              >
+                <svg
+                  t="1724327196827"
+                  class="icon"
+                  viewBox="0 0 1024 1024"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  p-id="8249"
+                  width="200"
+                  height="200"
+                >
+                  <path
+                    d="M513 583.8l448.5-448.5c-11.6-4.7-24.3-7.3-37.5-7.3H100c-12.7 0-24.9 2.4-36.1 6.7L513 583.8z"
+                    fill=""
+                    p-id="8250"
+                  ></path>
+                  <path
+                    d="M513 674.3L14.6 175.9C5.3 191.1 0 208.9 0 228v568c0 55.2 44.8 100 100 100h824c55.2 0 100-44.8 100-100V228c0-18.5-5.1-35.9-13.9-50.8L513 674.3z"
+                    fill=""
+                    p-id="8251"
+                  ></path>
+                </svg>
+              </a>
+            </div>
+            <div class="footer-item" >
+              <a class="icon link" href="/about" title="关于">
+                <span class="text-muted">
+                  © {{app_copyright_year_start}} - {{app_copyright_year_end}}
+                </span>
+              </a>
+            </div>
+            <div class="footer-item">
+              <a class="btn-icon icon" href="/feed.xml" title="订阅">
+                <svg
+                  t="1713113780749"
+                  viewBox="0 0 1024 1024"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  p-id="6616"
+                >
+                  <path
+                    d="M832.512 63.488q26.624 0 49.664 10.24t40.448 27.648 27.648 40.448 10.24 49.664l0 704.512q0 26.624-10.24 49.664t-27.648 40.448-40.448 27.648-49.664 10.24l-704.512 0q-26.624 0-49.664-10.24t-40.448-27.648-27.648-40.448-10.24-49.664l0-704.512q0-26.624 10.24-49.664t27.648-40.448 40.448-27.648 49.664-10.24l704.512 0zM188.416 923.648q19.456 0 36.864-7.168t30.208-19.968 19.968-30.208 7.168-36.864-7.168-36.864-19.968-30.208-30.208-19.968-36.864-7.168q-20.48 0-37.376 7.168t-30.208 19.968-20.48 30.208-7.168 36.864 7.168 36.864 20.48 30.208 30.208 19.968 37.376 7.168zM446.464 897.024l36.864 0q15.36 0 30.208 0.512t31.232 0.512 36.864-1.024q0-93.184-35.84-175.616t-97.28-143.872-143.872-96.768-175.616-35.328q-1.024 24.576-1.024 39.936l0 28.672q0 14.336 0.512 29.184t0.512 37.376q65.536 0 123.392 24.576t100.864 67.584 68.096 100.864 25.088 123.392zM707.584 894.976q36.864 0 49.152 0.512t18.432 1.536 15.872 1.024 41.472-2.048q0-145.408-55.296-272.896t-150.528-222.72-223.232-150.528-273.408-55.296q-1.024 25.6-1.024 36.864l0 16.384q0 4.096 0.512 5.632t0.512 7.168 0.512 18.432 0.512 40.448q119.808 0 224.768 45.056t183.296 123.392 123.392 183.296 45.056 223.744z"
+                    p-id="6617"
+                    fill="#00a9fa"
+                  ></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% if track %}
+      <script defer>
+        var _hmt = _hmt || [];
+        (function () {
+          var hm = document.createElement('script');
+          hm.src = 'https://hm.baidu.com/hm.js?<你的百度统计key>';
+          var s = document.getElementsByTagName('script')[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      </script>
+      {% endif %}
+      <script src="/static/js/lazy-img.js" defer></script>
+      <script src="/static/js/pvr.js" defer></script>
+      <script defer src="/static/js/confetti-1.9.3.js"></script>
+      <script defer src="/static/js/celebrate.js"></script>
+    </div>
+  </body>
+  <!-- 
+               -——
+  🫵  🔨 📦 🔑  |🤡 / 😀
+               -——
+--></html>

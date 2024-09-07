@@ -1,0 +1,104 @@
+$pc-base-font-size: 14px;
+:root {
+  --base-color: #01aef0;
+  --main-bg-color: #fff;
+  --code-bg-color: #cee5ff;
+  --input-bg-color: #ebebeb;
+  --base-main-bg-img: linear-gradient(
+      90deg,
+      transparent 2px,
+      rgba(0, 0, 0, 0.05) 2px,
+      rgba(188, 186, 186, 0.05) 2.5px,
+      rgba(188, 186, 186, 0.3) 2.5px
+    ),
+    linear-gradient(
+      0deg,
+      transparent 2px,
+      rgba(0, 0, 0, 0.05) 2px,
+      rgba(188, 186, 186, 0.05) 2.5px,
+      rgba(188, 186, 186, 0.3) 2.5px
+    );
+  --base-width: 620px;
+  --font-size: $pc-base-font-size;
+  --font-color: #222222;
+  --font-size-tip: $pc-base-font-size - 2px;
+  --container-margin: 1vh auto;
+  --container-padding-vertical: 1em;
+  --container-padding-horizontal: 1em;
+  --container-height-min: 98vh;
+  --toc-width: 300px;
+  --toc-height: 90vh;
+  --border-color: #ebe9e9;
+
+  // 网站头部
+  --nav-font-size: $pc-base-font-size - 2px;
+  --nav-icon-size: 15px;
+  // 网站脚步
+  --footer-font-size: $pc-base-font-size - 2px;
+  --footer-icon-size: 12px;
+  --footer-padding-size: 10px;
+  // 日志
+  --timeline-font-size: 10px;
+  --whisper-block-color: rgba(207, 207, 210, 0.36);
+  // moment
+  --moment-day-font-size: 50px;
+  --moment-date-font-size: 10px;
+  --moment-saying-font-size: $pc-base-font-size * 0.7;
+}
+
+$phone-base-font-size: 16px;
+@media (min-width: 0px) and (max-width: 768px) {
+  :root {
+    --base-width: 100vw;
+    --font-size: $phone-base-font-size;
+    --font-size-tip: $phone-base-font-size - 4px;
+    --container-height-min: 100vh;
+    --container-margin: 0px;
+    --toc-width: 100vw;
+    --toc-height: 100vh;
+    --border-color: #eeebeb;
+    --footer-padding-size: 3em;
+    --footer-font-size: $phone-base-font-size * 0.7;
+    --footer-icon-size: $phone-base-font-size * 0.7;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  :root {
+    --base-width: 100vw;
+    --font-size: $pc-base-font-size;
+    --font-size-tip: $pc-base-font-size - 2px;
+    --container-padding-horizontal: 3em;
+    --container-height-min: 100vh;
+    --container-margin: 0px;
+    --toc-width: 100vw;
+    --toc-height: 100vh;
+    --border-color: #eeebeb;
+    --footer-icon-size: $phone-base-font-size;
+    --footer-padding-size: 3em;
+    --footer-icon-size: $phone-base-font-size;
+  }
+}
+
+.darkmode {
+  --main-bg-color: #091524;
+  --font-color: #6c92bd;
+  --base-main-bg-img: linear-gradient(
+      90deg,
+      transparent 2px,
+      rgba(0, 0, 0, 0.05) 2px,
+      rgba(188, 186, 186, 0.05) 2.5px,
+      rgba(40, 55, 83, 0.3) 2.5px
+    ),
+    linear-gradient(
+      0deg,
+      transparent 2px,
+      rgba(0, 0, 0, 0.05) 2px,
+      rgba(188, 186, 186, 0.05) 2.5px,
+      rgba(86, 83, 83, 0.3) 2.5px
+    );
+  --border-color: #283039;
+  --input-bg-color: rgba(27, 46, 73, 0.87);
+  --code-bg-color: rgba(27, 46, 73, 0.87);
+  --whisper-block-color: rgba(64, 64, 71, 0.36);
+}

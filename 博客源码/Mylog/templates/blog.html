@@ -1,0 +1,268 @@
+{% extends 'template.html' %}
+{% from 'macro.html' import comment  %}
+{% from 'macro.html' import upper  %}
+
+{% block header %}
+    <style class="inner-code">
+        {{ 'code.css' | inner_css | safe }}
+    </style>
+{% endblock header %}
+
+{% block content %}
+    <!-- 博客信息 -->
+    <h1 class="blog-title">{{ blog.title }}</h1>
+    <div class="blog-info tip">
+        <span class="publish">发布:&nbsp;{{blog.time.strftime('%Y-%m-%d')}}</span>
+        {% if blog.update %}
+            <span class="update">修改:&nbsp;{{blog.update.strftime('%Y-%m-%d')}}</span>
+        {% endif %}
+        {% if blog.comments|length > 0 %}
+            <span class="comment-num">回复:&nbsp;{{ blog.comments | length}} 条</span>
+        {% endif %}
+        <span class="category">话题:&nbsp;#{{ blog.category }}#</span>
+    </div>
+
+    <br>
+    <!-- 备注 -->
+    {% if blog.note %}
+        <div class="note">
+            <div class="icon">
+                <span>📎</span>
+            </div>
+            <div class="note-body">
+                 <p class="note-text">{{ blog.note }} </p>
+            </div>
+        </div>
+        <br>
+    {% endif %}
+    <!-- 博客内容区 -->
+    <!-- 👀 -->
+    <div class="content content-text markdown-body" id="blog-body">
+        <br>
+        {{ blog.body | md2html | safe }}
+    </div>
+
+    {{ upper() }}
+    {% if blog.commentable %}
+        <!-- 这是留言区 -->
+        <!-- 🔖 👉 🤡 -->
+         {% if blog.comments %}
+            <div class="comments" >
+                {% for cmt in blog.comments %}
+                    {% if cmt.audit %}
+                        <div class="comment" >
+                            <div class="cmt-item user">
+                                <span>
+                                    {% if cmt.parent %}
+                                        <span ><strong>{{cmt.nickname }}</strong></span> 回复 <strong>{{cmt.parent.nickname}}&nbsp;&nbsp;</strong>说</span>
+                                    {% else %}
+                                    <span ><strong>{{cmt.nickname }}</strong>&nbsp;说</span></span>
+                                    {% endif%}
+                                <span>
+                                    {{ moment(cmt.time).fromNow() }}&nbsp;&nbsp;
+                                    {% if cmt.site %}
+                                        <span title="前往评论者站点。">
+                                            <a href="{{ cmt.site }}" target="_blank" class="icon-link">🌐</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        </span>
+                                    {% endif %}
+                                    <span class="reply-btn" title="回复{{ cmt.nickname }}" 
+                                    data-reply-id="{{ cmt.id }}" 
+                                    data-reply-nickname="{{ cmt.nickname }}"
+                                    onclick="makeReply(event)"
+                                    >➥</span>
+                                </span>
+                            </div>
+                            <div class="cmt-item body">
+                                <span>{{ cmt.body | md2html | safe }}</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <!-- 这里是留言板块 -->
+        <!-- 😀 👉 🤡 -->
+         
+        <div class="board" >
+            <div class="form-inner" >
+                <div class="form-item">
+                    <label class="required" for="comment">*&nbsp;</label>
+                    <textarea class="board-item textarea " id="comment"  placeholder="留言文本内容" name="comment" id="cmt" cols="30" rows="10"></textarea>
+                </div>
+                <div class="form-item">
+                    <details>
+                        <summary>选填内容</summary>
+                        <div class="detail-body">
+                            <div class="form-item">
+                                <label for="nickname">昵称&nbsp;</label>
+                                <input class="nickname board-item " id="nickname"  type="text"  placeholder="愿意的话可以留下一个昵称">
+                            </div>
+                            <div class="form-item">
+                                <label for="email">邮箱&nbsp;</label>
+                                <input class="email board-item " id="email" type="text"  placeholder="当有回复时通知，不会泄露">
+                            </div>
+                            <div class="form-item">
+                                <label for="site">站点&nbsp;</label>
+                                <input class="site board-item " id="site" type="text"  placeholder="愿意的话可以留下自己的站点链接">
+                            </div>
+                        </div>
+                    </details>
+                </div>
+                <input class="csrf board-item" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
+                <input class="id board-item" id="blogid" value="{{ blog.id }}" type="hidden">
+                <input class="replyid board-item" id="replyid" name="replyid" value="" type="hidden" >
+                <input class="title board-item" id="blogtitle" value="{{ blog.title }}" type="hidden">
+                <button class="submit icon" type="submit" id="cmt-submit">提交</button>
+            </div>
+        </div>
+    {% endif %}
+    <script src="/static/js/mermaid.js" ></script>
+    <link rel="stylesheet" href="/static/css/highlight.css">
+    <script src="/static/js/highlight.js" ></script>
+
+    <script defer src="/static/js/nprogress-0.2.0.js"></script>
+    <link rel="stylesheet" href="/static/css/nprogress.css">
+    <!-- 渲染代码和图表 -->
+    <script defer>
+        mermaid.initialize({ startOnLoad: true });
+        hljs.highlightAll();
+    </script>
+    <script defer>
+        /* 回复动作 */
+        function makeReply(event) {
+            let element = event.target;
+            let replyId = element.getAttribute('data-reply-id');
+            let replyNickname = element.getAttribute('data-reply-nickname');
+            let replyIdInputEle = document.getElementById('replyid');
+            replyIdInputEle.value = replyId
+            document.getElementById('comment').value = `@${ replyNickname } `;
+        }
+    
+        const cmtBtnEle = document.getElementById('cmt-submit')
+        cmtBtnEle.onclick = submitCmt
+        /* 留言 */
+        function submitCmt(){
+            const nickname = document.getElementById('nickname').value
+            const email = document.getElementById('email').value
+            const site = document.getElementById('site').value
+            const comment = document.getElementById('comment').value
+            const csrf_token = document.getElementById('csrf_token').value
+            const blogid = document.getElementById('blogid').value
+            const replyid = document.getElementById('replyid').value
+            const blogtitle = document.getElementById('blogtitle').value
+            if (comment == ''){
+                alert('请填写评论内容')
+                return
+            }
+            const payload = {
+                nickname,
+                email,
+                site,
+                comment,
+                csrf_token,
+                blogid,
+                replyid,
+                blogtitle
+            }
+
+            NProgress.start()
+            cmtBtnEle.style.display = 'none'
+            fetch('/mylog/comment/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrf_token,
+                },
+                body: JSON.stringify(payload)
+            }).then(res => res.json()).then(res => {
+                if (res.status){
+                    celebrate()
+                    setTimeout(() =>{
+                        location.reload()
+                    }, 3000)
+                }else{
+                    alert(`出错了：${res.msg}`)
+                    console.error(res)
+                }
+            }).catch(err =>{
+                alert(`出错了：${err}`)
+                console.error(err)
+            })
+            .finally(() =>{
+                NProgress.done()
+                cmtBtnEle.style.display = 'block'
+            })
+
+        }
+                    
+    </script>
+    <!-- 目录缩展 -->
+    <script>
+        const tocs = document.getElementsByClassName('toc');
+
+        if (tocs.length != 0){
+            const tocEle = tocs[0]; 
+            const tocSwitch = document.getElementById('toc-switch')
+            function collapse(){
+                tocEle.classList.remove('active')
+                tocSwitch.classList.add('active')
+                tocSwitch.setAttribute('data-collapse', 'false')
+            }
+            function uncollapse(){
+                tocEle.classList.add('active')
+                tocEle.classList.remove('uncollapse')
+                tocSwitch.classList.remove('active')
+                tocSwitch.setAttribute('data-collapse', 'true')
+            }
+            // 屏幕大于1024，默认开启目录
+            if(window.screen.width > 1023){
+                uncollapse()
+            }
+            tocSwitch.addEventListener('click', (evt) => {
+                if (evt.currentTarget.getAttribute('data-collapse') == 'true') {
+                    collapse()
+                } else{
+                    uncollapse()
+                }
+            })
+            // 目录提示当前浏览章节
+            window.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                const id = entry.target.getAttribute('id');
+                if (entry.intersectionRatio > 0) {
+                document
+                    .querySelector(`div.toc ul li a[href="#${id}"]`)
+                    .parentElement.classList.add('active');
+                } else {
+                document
+                    .querySelector(`div.toc ul li a[href="#${id}"]`)
+                    .parentElement.classList.remove('active');
+                }
+            });
+            });
+            document.querySelectorAll('section[id]').forEach(sectionEle => {
+                observer.observe(sectionEle);
+            });
+        });
+        }
+
+    </script>
+    <script defer>
+        document.getElementById('blog-body').addEventListener('click', function(event) {
+            if (event.target.classList.contains('code-copy')) {
+                const codeEle = event.target.parentElement.parentElement.getElementsByTagName('code')[0];
+                const code = codeEle.innerText;
+                navigator.clipboard.writeText(code).then(function() {
+                    event.target.innerText = '已复制'
+                    // 10s后恢复【复制】按你
+                    setTimeout(() =>{
+                        event.target.innerText = '复制'
+                    }, 10000)
+                }).catch(function(error) {
+                    console.error('复制失败:', error);
+                });
+            }
+        });
+    </script>
+{% endblock %}

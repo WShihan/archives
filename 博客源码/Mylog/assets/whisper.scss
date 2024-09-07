@@ -1,0 +1,42 @@
+@import './define.scss';
+
+.whisper {
+  width: 100%;
+  .whisper-item {
+    display: flex;
+    gap: 5px;
+    width: 100%;
+    min-height: 6em;
+    border: none;
+    .whisper-item-body {
+      flex: 9;
+      padding: 1em 0px;
+      .body-text {
+        height: 100%;
+        padding: .5em;
+        font-size: getVar(--font-size);
+        line-height: 2em;
+        border-radius: 3px;
+        background: getVar(--whisper-block-color);
+        img {
+          display: block;
+          width: 100%;
+          margin: .5em auto;
+          border-radius: .5em;
+        }
+      }
+    }
+    .whisper-item-timeline {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      color: getVar(--font-color);
+      font-size: getVar(--timeline-font-size);
+      border: none;
+      border-left: 1px solid getVar(--border-color);
+    }
+  }
+}
+

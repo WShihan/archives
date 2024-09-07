@@ -1,0 +1,80 @@
+.lazy-img-wrapper img {
+  border-radius: 0px; }
+
+  .covers {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2vw;
+    margin: 1em 0px; }
+
+    .cover {
+      flex: 3;
+      display: flex;
+      gap: 1vw;
+      flex-direction: column;
+      flex-wrap: wrap;
+      background-color: var(--base-color);
+      padding-bottom: 1vw;
+      width: 100%; }
+      .cover .lazy-img-wrapper {
+        position: relative;
+        width: 100%;
+        background-color: var(--base-color); }
+        .cover .lazy-img-wrapper a {
+          width: 100%; }
+          .cover .lazy-img-wrapper a img {
+            width: inherit; }
+        .cover .lazy-img-wrapper .btn {
+          position: absolute;
+          top: 50%;
+          right: 0;
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between; }
+          .cover .lazy-img-wrapper .btn span {
+            color: var(--base-color); }
+            .cover .lazy-img-wrapper .btn span:active {
+              color: #666; }
+              .cover .lazy-img-wrapper .btn span:hover {
+                color: #666; }
+      .cover .info {
+        display: flex;
+        flex-direction: row;
+        padding: 0.5em 0em; }
+        .cover .info .saying {
+          flex: 3;
+          display: flex;
+          flex-direction: row;
+          justify-content: left;
+          align-items: center;
+          padding: 1em 1em;
+          font-size: var(--moment-saying-font-size);
+          background-color: #d2e3f4; }
+          .cover .info .saying span {
+            color: #232222; }
+        .cover .info .now {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          background-color: #f1f2f3;
+          font-family: 'Sim Hei';
+          padding: 10px; }
+          .cover .info .now .day {
+            display: flex;
+            flex-direction: column;
+            align-items: center; }
+            .cover .info .now .day span {
+              color: #333;
+              font-weight: bolder;
+              font-size: var(--moment-day-font-size); }
+          .cover .info .now .date {
+            display: flex;
+            flex-direction: row;
+            justify-content: center; }
+            .cover .info .now .date span {
+              color: gray;
+              font-size: var(--moment-date-font-size); }

@@ -1,0 +1,63 @@
+{% macro comment(blog, csrf) %}
+<div class="board" >
+    <form action="/api/comment/create"  method="post" >
+        <div class="form-inner" >
+            <div class="form-item">
+                <label for="nickname">*</label>
+                <input class="nickname board-item" name="nickname" type="text"  placeholder="评论昵称">
+            </div>
+            <div class="form-item">
+                <label for="email">&nbsp;</label>
+                <input class="email board-item" name="email" type="text"  placeholder="邮箱可选，当有新评论时通知，不会泄露">
+            </div>
+            <div class="form-item">
+                <label for="site">&nbsp;</label>
+                <input class="site board-item" name="site" type="text"  placeholder="站点可选">
+            </div>
+            <div class="form-item">
+                <label for="comment">*</label>
+                <textarea class="board-item textarea" id="comment"  placeholder="文字内容" name="comment" id="cmt" cols="30" rows="10"></textarea>
+            </div>
+            <input class="csrf board-item" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
+            <input class="id board-item" name="blogid" value="{{ blog.id }}" type="hidden">
+            <input class="replyid board-item" id="replyid" name="replyid" value="" type="hidden" >
+            <input class="title board-item" name="blogtitle" value="{{ blog.title }}" type="hidden">
+            <button class="submit" type="submit">提交</button>
+        </div>
+    </form>
+</div>
+{% endmacro %}
+
+
+{% macro license() %}
+<div class="blog-license">
+    <a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh-hans" target="_blank" rel="noopener noreferrer">
+        <span>版权声明：自由转载-非商用-非衍生-保持署名（创意共享3.0许可证）</span>
+    </a>
+</div>
+{% endmacro %}
+
+{% macro csrf_validator() %}
+<input class="csrf board-item" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
+{% endmacro %}
+
+{% macro upper() %}
+<div class="upper" id="upper">
+    <a title="返回文档顶部" href="#top"><span>⌃</span></a>
+</div>
+<script defer>
+    const upperEle = document.getElementById('upper')
+    let nav = document.getElementsByClassName('nav')[0]
+    let observer = new IntersectionObserver(entries =>{
+        entries.forEach(entry =>{
+            if (entry.isIntersecting){
+                upperEle.style.opacity = 0
+            } else {
+                upperEle.style.opacity = 1
+
+            }
+        })
+    })
+    observer.observe(nav)
+</script>
+{% endmacro %}

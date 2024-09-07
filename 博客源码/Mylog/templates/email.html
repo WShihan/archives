@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>「wsh233.cn」评论回复提醒</title>
+    <style>
+      * {
+        padding: 0px;
+        margin: 0px;
+      }
+      html {
+        background-image: linear-gradient(
+            90deg,
+            transparent 2px,
+            rgba(0, 0, 0, 0.05) 2px,
+            rgba(188, 186, 186, 0.05) 2.5px,
+            rgba(188, 186, 186, 0.3) 2.5px
+          ),
+          linear-gradient(
+            0deg,
+            transparent 2px,
+            rgba(0, 0, 0, 0.05) 2px,
+            rgba(188, 186, 186, 0.05) 2.5px,
+            rgba(188, 186, 186, 0.3) 2.5px
+          );
+        background-size: 20px 20px;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      hr {
+        opacity: 0.2;
+      }
+      :root {
+        --base-width: 500px;
+        --min-height: 600px;
+        --content-margin: 1em auto;
+        --font-size: 12px;
+        --font-size-s: 10px;
+        --font-size-xs: 8px;
+        --bordr-color: rgba(186, 184, 184, 0.2);
+      }
+      @media (min-width: 0px) and (max-width: 768px) {
+        :root {
+          --base-width: 100vw;
+          --min-height: 100vh;
+          --content-margin: 0 auto;
+        }
+      }
+      .content {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        width: var(--base-width);
+        min-height: var(--min-height);
+        margin: var(--content-margin);
+        color: rgb(97, 97, 97);
+        font-size: var(--font-size);
+        line-height: 2em;
+        background-color: #f7f7f7fe;
+      }
+      .body {
+        flex: 1;
+        padding: 1em;
+        margin: 1em 0vw;
+      }
+      .body .response {
+        margin: 2em 0em;
+      }
+      .body blockquote {
+        border-left: 2px solid var(--bordr-color);
+        padding-left: 2em;
+      }
+      .content .header {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        justify-content: center;
+        align-content: center;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: 0.5rem 0em;
+        border-bottom: 1px solid var(--bordr-color);
+      }
+      .header .ico {
+        display: inline-block;
+        width: 1.5em;
+        height: 1.5em;
+      }
+      .footer {
+        text-align: center;
+        font-size: var(--font-size-xs);
+        color: gray;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content">
+      <div class="header">
+        <img class="ico" src="https://www.wsh233.cn/static/Favicon.ico" alt="icon" />
+        <strong>「wsh233.cn」评论回复提醒</strong>
+      </div>
+      <div class="body">
+        <div class="response">
+          <p>
+            <strong>{{reply.nickname}}</strong>
+            你好：
+          </p>
+          <p>
+            你在博文
+            <a href="https:wsh233.cn/blog/{{blog.id}}">{{blog.title}}</a>
+            中的评论收到回复，内容如下：
+          </p>
+          <blockquote>
+            <p>{{msg}}</p>
+          </blockquote>
+        </div>
+        <div class="response origin">
+          <p>原始评论：</p>
+          <blockquote>
+            <p>{{reply.body}}</p>
+          </blockquote>
+        </div>
+      </div>
+      <br />
+      <div class="footer">
+        <hr />
+        <span>{{time}}</span>
+        <br />
+        <span>本邮件系自动发送，请勿回复！</span>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,30 @@
+{% extends 'template.html' %} 
+{% from 'macro.html' import upper %}
+{% block head %} 
+{% endblock %} 
+
+{% block content %}
+{% if subs %}
+<div class="subs">
+  {% for k, v in subs.items() %}
+    <a href="/whisper/{{k}}">{{k}}年</a>
+  {% endfor %}
+</div>
+{% endif %}
+<div class="whisper">
+  {% for d in diary %}
+  <div class="whisper-item">
+      <div class="whisper-item-body">
+        <div class="body-text ">{{ d.body | md2html | safe }}</div>
+      </div>
+    <div class="whisper-item-timeline">
+      <div class="timeline">
+        <span>☉</span>
+        <span>{{ d.time.strftime("%Y-%m-%d") }}</span>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{{ upper() }}
+{% endblock %} 

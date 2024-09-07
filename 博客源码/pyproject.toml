@@ -1,0 +1,49 @@
+[tool.poetry]
+name = "mylog"
+version = "0.1.0"
+description = ""
+authors = ["WShihan <3443327820@qq.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+flask = "3.0.3"
+flask-caching = "2.3.0"
+flask-cors = "4.0.1"
+flask-mail = "0.10.0"
+flask-sqlalchemy = "^3.1.1"
+flask-migrate = "4.0.7"
+flask-minify = "0.48"
+flask-moment = "1.0.6"
+flask-scss = "0.5"
+flask-sitemap = "0.4.0"
+flask-wtf = "1.2.1"
+markdown = "3.7"
+markdown-checklist = "0.4.4"
+requests = "^2.32.3"
+user-agents = "2.2.0"
+cos-python-sdk-v5 = "1.9.31"
+tencentcloud-sdk-python = "3.0.1217"
+redis = "5.0.8"
+feedgen = "1.0.0"
+gunicorn = "23.0.0"
+psycopg2 = "2.9.9"
+flask-jwt-extended = "^4.6.0"
+
+
+
+[[tool.poetry.source]]
+name = "douban"
+url = "https://pypi.doubanio.com/simple"
+priority = "supplemental"
+
+
+[tool.poetry.group.dev.dependencies]
+python-dotenv = "1.0.1"
+psycopg2-binary = "^2.9.9"
+watchdog = "==4.0.2"
+selenium = "4.23.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

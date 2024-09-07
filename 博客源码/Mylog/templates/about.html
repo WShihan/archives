@@ -1,0 +1,16 @@
+{% extends 'template.html' %}
+
+{% block header %}
+<title>关于Mylog</title>
+{% endblock %}
+
+{% block content %}
+<div class="about content">
+    <span>
+        {{ about_text | md2html | safe }}
+    </span>
+
+</div>
+
+
+{% endblock content %}

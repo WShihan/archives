@@ -1,0 +1,329 @@
+@import './define.scss';
+
+.code-win {
+  width: 100%;
+  overflow: hidden;
+  margin: 2em auto;
+  border-radius: 0.1em;
+  .code-titlebar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.2em 0.5em;
+    background-color: #163a60;
+    .code-copy {
+      color: #c7c7c7;
+      font-size: 0.7em;
+      cursor: pointer;
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+
+  .code-buttons {
+    display: flex;
+    justify-content: flex-start;
+    .code-button {
+      width: 0.5em;
+      height: 0.5em;
+      border-radius: 50%;
+      margin-left: 0.5em;
+      &.close {
+        background-color: #ff5f56;
+      }
+      &.minimize {
+        background-color: #ffbd2e;
+      }
+      &.zoom {
+        background-color: #27c93f;
+      }
+    }
+  }
+  .code-content {
+    padding: 1em;
+    font-family: monospace;
+    overflow: auto;
+    max-height: 60vh;
+    background-color: getVar(--code-bg-color);
+
+    pre {
+      line-height: 1.2em !important;
+      .codehilite {
+        width: 100%;
+        overflow: scroll;
+      }
+    }
+    code {
+      background-color: transparent !important;
+    }
+  }
+}
+table {
+  margin: 0 auto;
+  td,
+  th {
+    border: 1px solid gray;
+  }
+}
+.blog-title {
+  margin-top: 1em;
+  font-size: 1.2em;
+  text-align: center;
+}
+.blog-info {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1em;
+  width: 100%;
+  margin: 0.5em auto;
+  text-align: left;
+  font-size: getVar(--font-size-tip);
+  color: rgb(161, 160, 160);
+}
+.mermaid {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 1.5vw 0vw;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0vw;
+  min-height: 60vh;
+  font-size: getVar(--font-size);
+  padding-bottom: 10%;
+
+  p {
+    width: 100%;
+    overflow: hidden;
+  }
+}
+.note {
+  position: relative;
+  width: 100%;
+  text-align: right;
+  border-radius: 5px;
+  border: 1px solid rgba(189, 187, 187, 0.529);
+  background-color: inherit;
+  color: inherit;
+  color: #a1a0a0;
+  .note-body {
+    line-height: 1.5em;
+    text-align: left;
+    padding: 1em 0.1em;
+    word-break: break-all;
+    .note-text {
+      flex: 1;
+    }
+  }
+  .icon {
+    position: absolute;
+    left: -0px;
+    top: -12px;
+    font-size: getVar(--font-size);
+  }
+}
+
+.reply-btn,
+.icon-link {
+  display: inline-block;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.5);
+    color: getVar(--base-color);
+  }
+}
+
+.content {
+  width: 100%;
+  margin: 0px auto;
+  font-size: getVar(--font-size);
+
+  // 覆盖基础样式
+  .footnote,
+  .mermaid {
+    max-width: 100%;
+  }
+  center {
+    width: 70%;
+    margin: 0px auto;
+    color: gray;
+    text-align: center;
+  }
+  .toc {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: getVar(--toc-width);
+    height: getVar(--toc-height);
+    border-radius: 3px;
+    transition: transform 0.5s;
+    background: getVar(--main-bg-color);
+    z-index: 998;
+    overflow: auto;
+    transform: translateX(-100%);
+    ul:first-child {
+      height: 100%;
+      overflow-y: auto;
+      padding-inline-start: 3em;
+    }
+    ul {
+      list-style: none;
+      li {
+        &.active {
+          a {
+            color: getVar(--base-color);
+          }
+        }
+        a {
+          color: rgb(82, 81, 81);
+        }
+      }
+    }
+    &.active {
+      transform: translateX(0%);
+      overflow: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      &:hover {
+        color: getVar(--base-color);
+      }
+    }
+  }
+  .toc-switch {
+    position: fixed;
+    left: 0px;
+    top: 50vh;
+    padding: 0.1em 0.5em;
+    z-index: 999;
+    border-radius: 0px 0.5em 0.5em 0px;
+    background: getVar(--base-color);
+    cursor: pointer;
+    color: #000;
+    &:hover {
+      color: #fff;
+      font-weight: bolder;
+    }
+    &.active {
+      background: #68929c;
+    }
+  }
+}
+.note {
+  width: 100%;
+  text-align: right;
+  font-size: getVar(--font-size);
+  .note-body {
+    padding: 0.5em;
+  }
+  .note-text {
+    flex: 1;
+  }
+  .note-head {
+    font-weight: bold;
+  }
+}
+.comments {
+  width: 100%;
+  margin: 0px auto;
+  padding: 1em 0em;
+  &::before {
+    content: '📃 留言内容';
+    font-weight: bolder;
+  }
+  .comment {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0.5em 0px;
+    margin: 0.5em 0px;
+    font-size: getVar(--font-size);
+    line-height: 1.5em;
+    border-top: 1px solid getVar(--border-color);
+    .cmt-item {
+      flex: 1;
+      width: 100%;
+      &.user {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      &.body {
+        position: relative;
+        width: 94%;
+        padding: 3%;
+      }
+    }
+  }
+}
+.board {
+  width: 100%;
+  margin: 1em auto;
+  padding-top: 2em;
+  border-top: 1px solid getVar(--border-color);
+  &::before {
+    content: '📝 写留言';
+    font-weight: bolder;
+  }
+  .form-inner {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1em;
+    .form-item {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5em;
+      details {
+        width: 100%;
+        .detail-body {
+          display: flex;
+          flex-direction: column;
+          padding: 1em 0em 0em 1em;
+          border-left: 2px solid getVar(--border-color);
+        }
+        summary {
+          cursor: pointer;
+        }
+      }
+      .board-item {
+        flex: 1;
+        display: flex;
+        width: 100%;
+        margin: 1em auto;
+        font-size: getVar(--font-size);
+      }
+      label {
+        &.required {
+          color: rgb(245, 74, 74);
+        }
+      }
+    }
+
+    button.submit {
+      margin: 2em;
+      font-size: getVar(--font-size);
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{% extends 'template.html' %} 
+{% from 'macro.html' import upper %}
+{% block header %} 
+{{ moment.include_moment() }} 
+{{moment.lang('zh-CN')}} 
+{% endblock header %} 
+{% block content %}
+<div class="outer" style="flex: 1;">
+  <div class="search">
+    <form action="/blogs">
+      <div class="search-input">
+        <input id="q" class="" name="search" placeholder="内容" value="{{search}}" />
+        <!-- 👀 -->
+        <button  id="submit" class="icon">搜索</button>
+      </div>
+    </form>
+  </div>
+  {% if subs %}
+    <div class="subs">
+      {% for k, v in subs.items() %}
+        <a href="/blogs/{{k}}">{{k}} ({{v}})</a>
+      {% endfor %}
+    </div>
+  {% endif %}
+  <div class="blogs">
+    {% for blog in blogs %}
+    <div class="post">
+      <div class="date">
+        <span >{{ moment(blog.time).fromNow() }} &nbsp;&nbsp;</span>
+      </div>
+      <div class="title">
+        <a href="/{{ '/'|concate('blog', blog.id) }}">
+          {% if blog.pin %}
+          <span class="pin" style="display: inline-block; transform: rotate(-90deg);">⇥</span>
+          {% endif %}
+          <span >{{blog.title}}</span>
+          <span> #{{blog.category}}#</span>
+        </a>
+      </div>
+
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{{ upper() }}
+{% endblock content %}
