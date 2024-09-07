@@ -35,19 +35,22 @@ poetry install
 
 2.修改Mylog目录下的`settings.py`文件的配置项
 
-3.初始化数据库
+3.初始化数据库和初始用户
 
 ```bash
 flask db init
 flask migrate
 flask upgrade
-```
 
-创建初始用户
-
-```bash
 flask init
 ```
+
+
+
+默认用户:
+
+* 用户名：admin
+* 密码：test123
 
 
 
