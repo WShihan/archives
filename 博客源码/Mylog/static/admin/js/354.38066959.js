@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkmy_app_vue"]=self["webpackChunkmy_app_vue"]||[]).push([[354],{5354:function(e,n,r){r.r(n),r.d(n,{default:function(){return s}});var u=r(3396);const a={class:"mylog-overview"};function t(e,n,r,t,o,v){const c=(0,u.up)("router-view");return(0,u.wg)(),(0,u.iD)("div",a,[(0,u.Wm)(c)])}var o={name:"mylog-overview"},v=r(89);const c=(0,v.Z)(o,[["render",t],["__scopeId","data-v-5b39a00b"]]);var s=c}}]);
+//# sourceMappingURL=354.38066959.js.map
