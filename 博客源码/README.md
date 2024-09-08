@@ -17,13 +17,13 @@
 ## 效果
 
 
-![image-20240908144007156](https://md-1301600412.cos.ap-nanjing.myqcloud.com/pic/typora/image-20240908144007156.png)
+![image-20240908162239214](https://md-1301600412.cos.ap-nanjing.myqcloud.com/pic/typora/image-20240908162239214.png)
 
 <center style="color: gray">博客首页</center>
 
 
 
-![image-20240908145205866](https://md-1301600412.cos.ap-nanjing.myqcloud.com/pic/typora/image-20240908145205866.png)
+![image-20240908162308781](https://md-1301600412.cos.ap-nanjing.myqcloud.com/pic/typora/image-20240908162308781.png)
 
 <center style="color: gray">后端管理页面</center>
 
